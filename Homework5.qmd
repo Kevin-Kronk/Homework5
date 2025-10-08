@@ -28,11 +28,159 @@ Read in and combine the data using functions from the tidyverse. Use an inner_jo
 
 ```{r}
 # Load the data
-tbl1 <- read_csv2("student+performance/student/student-mat.csv", 
-                  col_names=TRUE)
-tbl2 <- read_csv2("student+performance/student/student-por.csv",
-                  col_names=TRUE)
+math_data <- read_csv2("student+performance/student/student-mat.csv", 
+                       col_names=TRUE)
+portuguese_data <- read_csv2("student+performance/student/student-por.csv",
+                             col_names=TRUE)
 
 # inner join
+combined_data <- inner_join(math_data, portuguese_data, 
+                            by = c("school","sex","age","address",
+                                   "famsize","Pstatus","Medu","Fedu",
+                                   "Mjob","Fjob","reason","nursery","internet"))
 
+full_data
+```
+
+There appears to be an unexpected many-to-many relationship between 'x' and 'y'. Row 79 of 'x' matches multiple rows in 'y', and vice versa.
+
+User an inner_join() on all variables other than G1, G2, G3, paid, and absences. Use this form of the combined data in further exercises.
+
+```{r}
+# inner join
+combined_data <- inner_join(math_data, portuguese_data, 
+                            by = c("school","sex","age","address",
+                                   "famsize","Pstatus","Medu","Fedu",
+                                   "Mjob","Fjob","reason",
+                                   "guardian", "traveltime","studytime","failures",
+                                   "schoolsup", "famsup", "activities", "nursery",
+                                   "higher", "internet", "romantic", "famrel",
+                                   "freetime", "goout", "Dalc", "Walc", "health"))
+
+combined_data
+```
+
+Next, for the math data, Portuguese, and combined data, choose four categorical variables you are interested in and convert those into factor variables in each tibble (use the same four in each). Use the mutate() function to accomplish this.
+
+```{r}
+math_data <- math_data |>
+  mutate(school = as.factor(school),
+         sex = as.factor(sex),
+         internet = as.factor(internet),
+         activities = as.factor(activities))
+
+portuguese_data <- portuguese_data |>
+  mutate(school = as.factor(school),
+         sex = as.factor(sex),
+         internet = as.factor(internet),
+         activities = as.factor(activities))
+
+combined_data <- combined_data |>
+  mutate(school = as.factor(school),
+         sex = as.factor(sex),
+         internet = as.factor(internet),
+         activities = as.factor(activities))
+```
+
+### Task 2: Summarize the Data
+
+Look at how the data is stored and see if everything makes sense.
+
+```{r}
+str(combined_data)
+```
+
+All of the variables look reasonable.
+
+Document the missing values in the data.
+
+```{r}
+sum_na <- function(column) {
+  sum(is.na(column))
+}
+
+combined_data |>
+  summarize(across(everything(), sum_na))
+```
+
+Looks like there's no missing values in the data.
+
+#### Categorical Variables
+
+Create a one-way contingency table, a two-way contingency table, and a three-way contingency table for some of the factor variables you created previously. Use table() to accomplish this.
+
+```{r}
+# One-way contingency table
+table(combined_data$school)
+```
+
+In this data set there are 33 students going to the Mousinho da Silveira school.
+
+```{r}
+# Two-way contingency table
+table(combined_data$school, 
+      combined_data$activities)
+```
+
+Of the students who go to Mousinho da Silveira school, 12 of them do extra curricular activities.
+
+```{r}
+# Three-way contingency table
+table(combined_data$school,
+      combined_data$activities,
+      combined_data$internet)
+```
+
+Of the students who go to Mousinho da Silveira school and do extra curricular activities, only 1 of them doesn't have internet.
+
+Create a conditional two-way table using table(). That is, condition on one variable's setting and create a two-way table. Do this using two different methods:
+
+-   Once, by subsetting the data (say with filter()) and then creating the two-way table.
+
+```{r}
+# Conditional two-way table by subsetting data
+subset_data <- combined_data |>
+  filter(internet == 'yes') |>
+  select(school, activities, internet)
+
+table(subset_data$school, subset_data$activities)
+```
+
+-   Once, by creating a three-way table and subsetting it.
+
+```{r}
+three_way_contingency <- table(combined_data$school,
+                              combined_data$activities,
+                              combined_data$internet)
+
+three_way_contingency[ , , "yes"]
+```
+
+Create a two-way contingency table using group_by() and summarize() from dplyr. Then use pivot_wider() to make the result look more like the output from table().
+
+```{r}
+combined_data |>
+  group_by(school, activities) |>
+  summarize(count = n()) |>
+  pivot_wider(names_from = activities, values_from = count)
+```
+
+Create a stacked bar graph and a side-by-side bar graph. Give relevant x and y labels, and a title for the plots.
+
+```{r}
+# Stacked bar graph
+ggplot(combined_data, aes(x = school, fill = activities)) + 
+  geom_bar() +
+  labs(x = "School", y = "Count",
+       title = "Extra-Curricular Involvement by School") +
+  scale_fill_discrete("Activities")
+```
+
+```{r}
+# Side-by-side bar graph
+ggplot(combined_data, aes(x = school, fill = activities)) +
+  geom_bar(position = "dodge") +
+  labs(x = "School", y = "Count", 
+       title = "Extra-Curricular Involvement by School") +
+  scale_fill_discrete("Activities")
 ```
