@@ -4,4 +4,35 @@ format: html
 editor: visual
 ---
 
-## 
+## Summarizing Student Data
+
+```{r}
+# Load libraries
+library(tidyverse)
+```
+
+### Task 1: Read in the Data and Modify
+
+Modify the code provided to read in the data from a local file source and combine the two data frames. Use local paths as they do in their code.
+
+```{r}
+# Code provided
+d1=read.table("student+performance/student/student-mat.csv",sep=";",header=TRUE)
+d2=read.table("student+performance/student/student-por.csv",sep=";",header=TRUE)
+
+d3=merge(d1,d2,by=c("school","sex","age","address","famsize","Pstatus","Medu","Fedu","Mjob","Fjob","reason","nursery","internet"))
+print(nrow(d3)) # 382 students
+```
+
+Read in and combine the data using functions from the tidyverse. Use an inner_join() on the variables they used in their code. Do you notice any issues? Make a note of the issue.
+
+```{r}
+# Load the data
+tbl1 <- read_csv2("student+performance/student/student-mat.csv", 
+                  col_names=TRUE)
+tbl2 <- read_csv2("student+performance/student/student-por.csv",
+                  col_names=TRUE)
+
+# inner join
+
+```
