@@ -155,19 +155,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="task-1-read-in-the-data-and-modify">Task 1: Read in the Data and Modify</h3>
 <p>Modify the code provided to read in the data from a local file source and combine the two data frames. Use local paths as they do in their code.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Code provided</span></span>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Code provided with updated local paths</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>d1<span class="ot">=</span><span class="fu">read.table</span>(<span class="st">"student+performance/student/student-mat.csv"</span>,<span class="at">sep=</span><span class="st">";"</span>,<span class="at">header=</span><span class="cn">TRUE</span>)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>d2<span class="ot">=</span><span class="fu">read.table</span>(<span class="st">"student+performance/student/student-por.csv"</span>,<span class="at">sep=</span><span class="st">";"</span>,<span class="at">header=</span><span class="cn">TRUE</span>)</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>d3<span class="ot">=</span><span class="fu">merge</span>(d1,d2,<span class="at">by=</span><span class="fu">c</span>(<span class="st">"school"</span>,<span class="st">"sex"</span>,<span class="st">"age"</span>,<span class="st">"address"</span>,<span class="st">"famsize"</span>,<span class="st">"Pstatus"</span>,<span class="st">"Medu"</span>,<span class="st">"Fedu"</span>,<span class="st">"Mjob"</span>,<span class="st">"Fjob"</span>,<span class="st">"reason"</span>,<span class="st">"nursery"</span>,<span class="st">"internet"</span>))</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">nrow</span>(d3)) <span class="co"># 382 students</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Combine the two data sets where these columns match</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>d3<span class="ot">=</span><span class="fu">merge</span>(d1,d2,<span class="at">by=</span><span class="fu">c</span>(<span class="st">"school"</span>,<span class="st">"sex"</span>,<span class="st">"age"</span>,<span class="st">"address"</span>,<span class="st">"famsize"</span>,<span class="st">"Pstatus"</span>,<span class="st">"Medu"</span>,<span class="st">"Fedu"</span>,<span class="st">"Mjob"</span>,<span class="st">"Fjob"</span>,<span class="st">"reason"</span>,<span class="st">"nursery"</span>,<span class="st">"internet"</span>))</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">nrow</span>(d3)) <span class="co"># 382 students</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 382</code></pre>
 </div>
 </div>
 <p>Read in and combine the data using functions from the tidyverse. Use an inner_join() on the variables they used in their code. Do you notice any issues? Make a note of the issue.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the data</span></span>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the ; delimited data</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>math_data <span class="ot">&lt;-</span> <span class="fu">read_csv2</span>(<span class="st">"student+performance/student/student-mat.csv"</span>, </span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>                       <span class="at">col_names=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
@@ -194,7 +195,7 @@ dbl (16): age, Medu, Fedu, traveltime, studytime, failures, famrel, freetime...
 ℹ Use `spec()` to retrieve the full column specification for this data.
 ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># inner join</span></span>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># inner join the tibbles by these columns</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>combined_data <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(math_data, portuguese_data, </span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>                            <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"school"</span>,<span class="st">"sex"</span>,<span class="st">"age"</span>,<span class="st">"address"</span>,</span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">"famsize"</span>,<span class="st">"Pstatus"</span>,<span class="st">"Medu"</span>,<span class="st">"Fedu"</span>,</span>
@@ -231,9 +232,9 @@ dbl (16): age, Medu, Fedu, traveltime, studytime, failures, famrel, freetime...
 </div>
 </div>
 <p>There appears to be an unexpected many-to-many relationship between ‘x’ and ‘y’. Row 79 of ‘x’ matches multiple rows in ‘y’, and vice versa.</p>
-<p>User an inner_join() on all variables other than G1, G2, G3, paid, and absences. Use this form of the combined data in further exercises.</p>
+<p>Use an inner_join() on all variables other than G1, G2, G3, paid, and absences. Use this form of the combined data in further exercises.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># inner join</span></span>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># inner join the tibbles on all variables but G1, G2, G3, paid, absences</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>combined_data <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(math_data, portuguese_data, </span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>                            <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"school"</span>,<span class="st">"sex"</span>,<span class="st">"age"</span>,<span class="st">"address"</span>,</span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">"famsize"</span>,<span class="st">"Pstatus"</span>,<span class="st">"Medu"</span>,<span class="st">"Fedu"</span>,</span>
@@ -269,23 +270,24 @@ dbl (16): age, Medu, Fedu, traveltime, studytime, failures, famrel, freetime...
 </div>
 <p>Next, for the math data, Portuguese, and combined data, choose four categorical variables you are interested in and convert those into factor variables in each tibble (use the same four in each). Use the mutate() function to accomplish this.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>math_data <span class="ot">&lt;-</span> math_data <span class="sc">|&gt;</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">school =</span> <span class="fu">as.factor</span>(school),</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">sex =</span> <span class="fu">as.factor</span>(sex),</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">internet =</span> <span class="fu">as.factor</span>(internet),</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">activities =</span> <span class="fu">as.factor</span>(activities))</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>portuguese_data <span class="ot">&lt;-</span> portuguese_data <span class="sc">|&gt;</span></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">school =</span> <span class="fu">as.factor</span>(school),</span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>         <span class="at">sex =</span> <span class="fu">as.factor</span>(sex),</span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>         <span class="at">internet =</span> <span class="fu">as.factor</span>(internet),</span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>         <span class="at">activities =</span> <span class="fu">as.factor</span>(activities))</span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>combined_data <span class="ot">&lt;-</span> combined_data <span class="sc">|&gt;</span></span>
-<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">school =</span> <span class="fu">as.factor</span>(school),</span>
-<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>         <span class="at">sex =</span> <span class="fu">as.factor</span>(sex),</span>
-<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>         <span class="at">internet =</span> <span class="fu">as.factor</span>(internet),</span>
-<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>         <span class="at">activities =</span> <span class="fu">as.factor</span>(activities))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Converting school, sex, internet, and activities to factor</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>math_data <span class="ot">&lt;-</span> math_data <span class="sc">|&gt;</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">school =</span> <span class="fu">as.factor</span>(school),</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">sex =</span> <span class="fu">as.factor</span>(sex),</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">internet =</span> <span class="fu">as.factor</span>(internet),</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">activities =</span> <span class="fu">as.factor</span>(activities))</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>portuguese_data <span class="ot">&lt;-</span> portuguese_data <span class="sc">|&gt;</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">school =</span> <span class="fu">as.factor</span>(school),</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>         <span class="at">sex =</span> <span class="fu">as.factor</span>(sex),</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>         <span class="at">internet =</span> <span class="fu">as.factor</span>(internet),</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>         <span class="at">activities =</span> <span class="fu">as.factor</span>(activities))</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>combined_data <span class="ot">&lt;-</span> combined_data <span class="sc">|&gt;</span></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">school =</span> <span class="fu">as.factor</span>(school),</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>         <span class="at">sex =</span> <span class="fu">as.factor</span>(sex),</span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>         <span class="at">internet =</span> <span class="fu">as.factor</span>(internet),</span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>         <span class="at">activities =</span> <span class="fu">as.factor</span>(activities))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="task-2-summarize-the-data" class="level3">
@@ -335,15 +337,17 @@ dbl (16): age, Medu, Fedu, traveltime, studytime, failures, famrel, freetime...
  $ G3.y      : num [1:320] 11 11 14 13 13 13 13 17 13 14 ...</code></pre>
 </div>
 </div>
-<p>All of the variables look reasonable.</p>
+<p>All of the variables look reasonable and the four categorical variables from before are now factors.</p>
 <p>Document the missing values in the data.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>sum_na <span class="ot">&lt;-</span> <span class="cf">function</span>(column) {</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>(<span class="fu">is.na</span>(column))</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>combined_data <span class="sc">|&gt;</span></span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), sum_na))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to sum all of the NA values for a given column</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>sum_na <span class="ot">&lt;-</span> <span class="cf">function</span>(column) {</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>(<span class="fu">is.na</span>(column))</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Runs the sum_na function on all columns</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>combined_data <span class="sc">|&gt;</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), sum_na))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 38
   school   sex   age address famsize Pstatus  Medu  Fedu  Mjob  Fjob reason
@@ -411,12 +415,13 @@ dbl (16): age, Medu, Fedu, traveltime, studytime, failures, famrel, freetime...
 <li>Once, by subsetting the data (say with filter()) and then creating the two-way table.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Conditional two-way table by subsetting data</span></span>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Subsetting the data with filter</span></span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>subset_data <span class="ot">&lt;-</span> combined_data <span class="sc">|&gt;</span></span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(internet <span class="sc">==</span> <span class="st">'yes'</span>) <span class="sc">|&gt;</span></span>
 <span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(school, activities, internet)</span>
 <span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(subset_data<span class="sc">$</span>school, subset_data<span class="sc">$</span>activities)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating conditional two-way table</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(subset_data<span class="sc">$</span>school, subset_data<span class="sc">$</span>activities)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>    
       no yes
@@ -428,11 +433,13 @@ dbl (16): age, Medu, Fedu, traveltime, studytime, failures, famrel, freetime...
 <li>Once, by creating a three-way table and subsetting it.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>three_way_contingency <span class="ot">&lt;-</span> <span class="fu">table</span>(combined_data<span class="sc">$</span>school,</span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>                              combined_data<span class="sc">$</span>activities,</span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>                              combined_data<span class="sc">$</span>internet)</span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>three_way_contingency[ , , <span class="st">"yes"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Three-way contingency table</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>three_way_contingency <span class="ot">&lt;-</span> <span class="fu">table</span>(combined_data<span class="sc">$</span>school,</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>                              combined_data<span class="sc">$</span>activities,</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>                              combined_data<span class="sc">$</span>internet)</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Subsetting it for yes to internet</span></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>three_way_contingency[ , , <span class="st">"yes"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>    
       no yes
@@ -440,12 +447,15 @@ dbl (16): age, Medu, Fedu, traveltime, studytime, failures, famrel, freetime...
   MS  14  11</code></pre>
 </div>
 </div>
+<p>This shows that for the students that have internet access at home, there are more students who do extra curriculars at Gabriel Pereira school than Mousinho da Silveira school.</p>
 <p>Create a two-way contingency table using group_by() and summarize() from dplyr. Then use pivot_wider() to make the result look more like the output from table().</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>combined_data <span class="sc">|&gt;</span></span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(school, activities) <span class="sc">|&gt;</span></span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">count =</span> <span class="fu">n</span>()) <span class="sc">|&gt;</span></span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> activities, <span class="at">values_from =</span> count)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Grouping the data on school and activities, counting for each group</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="co"># then pivoting the table to have school on the y axis and activities on the x axis</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>combined_data <span class="sc">|&gt;</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(school, activities) <span class="sc">|&gt;</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">count =</span> <span class="fu">n</span>()) <span class="sc">|&gt;</span></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> activities, <span class="at">values_from =</span> count)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>`summarise()` has grouped output by 'school'. You can override using the
 `.groups` argument.</code></pre>
@@ -459,6 +469,7 @@ dbl (16): age, Medu, Fedu, traveltime, studytime, failures, famrel, freetime...
 2 MS        21    12</code></pre>
 </div>
 </div>
+<p>Now looking at all the students, there are more overall that do extra-curricular activities, even though Mousinho da Silveira school has more that don’t do extra-curriculars. Perhaps MS school is less well off and doesn’t have as many extra-curricular activities, but it could also just be random variation.</p>
 <p>Create a stacked bar graph and a side-by-side bar graph. Give relevant x and y labels, and a title for the plots.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Stacked bar graph</span></span>
@@ -475,6 +486,7 @@ dbl (16): age, Medu, Fedu, traveltime, studytime, failures, famrel, freetime...
 </div>
 </div>
 </div>
+<p>This plot clearly demonstrates that GP is a much larger school than MS.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Side-by-side bar graph</span></span>
 <span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(combined_data, <span class="fu">aes</span>(<span class="at">x =</span> school, <span class="at">fill =</span> activities)) <span class="sc">+</span></span>
@@ -490,18 +502,20 @@ dbl (16): age, Medu, Fedu, traveltime, studytime, failures, famrel, freetime...
 </div>
 </div>
 </div>
+<p>This plot shows that GP clearly has a higher proportion of students doing extra-curricular activities than MS.</p>
 </section>
 <section id="numeric-variables-and-across-groups" class="level4">
 <h4 class="anchored" data-anchor-id="numeric-variables-and-across-groups">Numeric Variables (and across groups)</h4>
 <p>The numeric variables are age, absences, and the three test grades variables (G1, G2, G3) from each data set.</p>
 <p>Find measures of center and spread for three of these variables (including at least one G3 variable).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>combined_data <span class="sc">|&gt;</span></span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="fu">across</span>(<span class="fu">c</span>(<span class="st">"age"</span>, <span class="st">"absences.x"</span>, <span class="st">"G3.x"</span>), <span class="fu">list</span>(<span class="st">"mean"</span> <span class="ot">=</span> mean,</span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>                                                        <span class="st">"median"</span> <span class="ot">=</span> median,</span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>                                                        <span class="st">"sd"</span> <span class="ot">=</span> sd,</span>
-<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>                                                        <span class="st">"IQR"</span> <span class="ot">=</span> IQR),</span>
-<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>                   <span class="at">.names =</span> <span class="st">"{.col}_{.fn}"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Finding the mean, median, sd, and IRQ for three numeric variables</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>combined_data <span class="sc">|&gt;</span></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="fu">across</span>(<span class="fu">c</span>(<span class="st">"age"</span>, <span class="st">"absences.x"</span>, <span class="st">"G3.x"</span>), <span class="fu">list</span>(<span class="st">"mean"</span> <span class="ot">=</span> mean,</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>                                                        <span class="st">"median"</span> <span class="ot">=</span> median,</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>                                                        <span class="st">"sd"</span> <span class="ot">=</span> sd,</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>                                                        <span class="st">"IQR"</span> <span class="ot">=</span> IQR),</span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>                   <span class="at">.names =</span> <span class="st">"{.col}_{.fn}"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 12
   age_mean age_median age_sd age_IQR absences.x_mean absences.x_median
@@ -511,15 +525,17 @@ dbl (16): age, Medu, Fedu, traveltime, studytime, failures, famrel, freetime...
 #   G3.x_mean &lt;dbl&gt;, G3.x_median &lt;dbl&gt;, G3.x_sd &lt;dbl&gt;, G3.x_IQR &lt;dbl&gt;</code></pre>
 </div>
 </div>
+<p>The average student is around 16.5 years old, meaning they are in high school. The mean absences in math class is higher than the median, so the distribution is skewed right with a large standard deviation. The final math grade mean and median are about the same with most students getting roughly a 2.4 to a 19.6 score.</p>
 <p>Repeat while subsetting the data in a meaningful way.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>combined_data <span class="sc">|&gt;</span></span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(health <span class="sc">&gt;=</span> <span class="dv">2</span>) <span class="sc">|&gt;</span></span>
-<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="fu">across</span>(<span class="fu">c</span>(<span class="st">"age"</span>, <span class="st">"absences.x"</span>, <span class="st">"G3.x"</span>), <span class="fu">list</span>(<span class="st">"mean"</span> <span class="ot">=</span> mean,</span>
-<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>                                                        <span class="st">"median"</span> <span class="ot">=</span> median,</span>
-<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>                                                        <span class="st">"sd"</span> <span class="ot">=</span> sd,</span>
-<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>                                                        <span class="st">"IQR"</span> <span class="ot">=</span> IQR),</span>
-<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>                   <span class="at">.names =</span> <span class="st">"{.col}_{.fn}"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This time looking at students in poor health</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>combined_data <span class="sc">|&gt;</span></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(health <span class="sc">&gt;=</span> <span class="dv">2</span>) <span class="sc">|&gt;</span></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="fu">across</span>(<span class="fu">c</span>(<span class="st">"age"</span>, <span class="st">"absences.x"</span>, <span class="st">"G3.x"</span>), <span class="fu">list</span>(<span class="st">"mean"</span> <span class="ot">=</span> mean,</span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>                                                        <span class="st">"median"</span> <span class="ot">=</span> median,</span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>                                                        <span class="st">"sd"</span> <span class="ot">=</span> sd,</span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>                                                        <span class="st">"IQR"</span> <span class="ot">=</span> IQR),</span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>                   <span class="at">.names =</span> <span class="st">"{.col}_{.fn}"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 12
   age_mean age_median age_sd age_IQR absences.x_mean absences.x_median
@@ -529,15 +545,17 @@ dbl (16): age, Medu, Fedu, traveltime, studytime, failures, famrel, freetime...
 #   G3.x_mean &lt;dbl&gt;, G3.x_median &lt;dbl&gt;, G3.x_sd &lt;dbl&gt;, G3.x_IQR &lt;dbl&gt;</code></pre>
 </div>
 </div>
+<p>The age of students in poor health is about the same as before. Perhaps surprisingly the number of absences in math is also about the same as before. The final math grades are slightly worse, but not by as much as you might expect for students in poor health.</p>
 <p>Find measures of center and spread across a single grouping variable for three of these variables (including a G3 variable as one of them).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>combined_data <span class="sc">|&gt;</span></span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(sex) <span class="sc">|&gt;</span></span>
-<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="fu">across</span>(<span class="fu">c</span>(<span class="st">"age"</span>, <span class="st">"absences.y"</span>, <span class="st">"G3.y"</span>), <span class="fu">list</span>(<span class="st">"mean"</span> <span class="ot">=</span> mean,</span>
-<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>                                                        <span class="st">"median"</span> <span class="ot">=</span> median,</span>
-<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>                                                        <span class="st">"sd"</span> <span class="ot">=</span> sd,</span>
-<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>                                                        <span class="st">"IQR"</span> <span class="ot">=</span> IQR),</span>
-<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>                   <span class="at">.names =</span> <span class="st">"{.col}_{.fn}"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Finding mean, median, sd, and IQR, for numeric variables grouped by sex</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>combined_data <span class="sc">|&gt;</span></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(sex) <span class="sc">|&gt;</span></span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="fu">across</span>(<span class="fu">c</span>(<span class="st">"age"</span>, <span class="st">"absences.y"</span>, <span class="st">"G3.y"</span>), <span class="fu">list</span>(<span class="st">"mean"</span> <span class="ot">=</span> mean,</span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>                                                        <span class="st">"median"</span> <span class="ot">=</span> median,</span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>                                                        <span class="st">"sd"</span> <span class="ot">=</span> sd,</span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>                                                        <span class="st">"IQR"</span> <span class="ot">=</span> IQR),</span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>                   <span class="at">.names =</span> <span class="st">"{.col}_{.fn}"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 2 × 13
   sex   age_mean age_median age_sd age_IQR absences.y_mean absences.y_median
@@ -548,15 +566,17 @@ dbl (16): age, Medu, Fedu, traveltime, studytime, failures, famrel, freetime...
 #   G3.y_mean &lt;dbl&gt;, G3.y_median &lt;dbl&gt;, G3.y_sd &lt;dbl&gt;, G3.y_IQR &lt;dbl&gt;</code></pre>
 </div>
 </div>
+<p>The ages of female and male students are roughly the same, with female students being slightly older. The female students have slightly more absences in Portuguese than the male students on average, as well as a higher standard deviation. The female students on average scored 1 point better on their final Portuguese grades than male students, though they had a lower standard deviation.</p>
 <p>Find measures of center and spread across two grouping variables for three of these variables (including a G3 variable as one of them).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>combined_data <span class="sc">|&gt;</span></span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(sex, guardian) <span class="sc">|&gt;</span></span>
-<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="fu">across</span>(<span class="fu">c</span>(<span class="st">"G1.x"</span>, <span class="st">"G2.x"</span>, <span class="st">"G3.x"</span>), <span class="fu">list</span>(<span class="st">"mean"</span> <span class="ot">=</span> mean,</span>
-<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>                                                   <span class="st">"median"</span> <span class="ot">=</span> median,</span>
-<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>                                                   <span class="st">"sd"</span> <span class="ot">=</span> sd,</span>
-<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>                                                   <span class="st">"IQR"</span> <span class="ot">=</span> IQR),</span>
-<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>                   <span class="at">.names =</span> <span class="st">"{.col}_{.fn}"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Finding mean, median, sd, and IQR, grouped by sex and guardian</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>combined_data <span class="sc">|&gt;</span></span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(sex, guardian) <span class="sc">|&gt;</span></span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="fu">across</span>(<span class="fu">c</span>(<span class="st">"G1.x"</span>, <span class="st">"G2.x"</span>, <span class="st">"G3.x"</span>), <span class="fu">list</span>(<span class="st">"mean"</span> <span class="ot">=</span> mean,</span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>                                                   <span class="st">"median"</span> <span class="ot">=</span> median,</span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>                                                   <span class="st">"sd"</span> <span class="ot">=</span> sd,</span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>                                                   <span class="st">"IQR"</span> <span class="ot">=</span> IQR),</span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a>                   <span class="at">.names =</span> <span class="st">"{.col}_{.fn}"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>`summarise()` has grouped output by 'sex'. You can override using the `.groups`
 argument.</code></pre>
@@ -576,11 +596,13 @@ argument.</code></pre>
 #   G3.x_median &lt;dbl&gt;, G3.x_sd &lt;dbl&gt;, G3.x_IQR &lt;dbl&gt;</code></pre>
 </div>
 </div>
+<p>Unfortunately it seems that students whose guardian was not a mother or father scored worse on their math grade for first period, second period, and especially for the female students on their final grade. The male students with other guardians on average had only slightly worse math grades on their final grade that the average male student with a mother or father guardian.</p>
 <p>Create a correlation matrix between all of the numeric variables.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>combined_data <span class="sc">|&gt;</span></span>
-<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(age, absences.x, absences.y, G1.x, G1.y, G2.x, G2.y, G3.x, G3.y) <span class="sc">|&gt;</span></span>
-<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cor</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Correlation matrix between all numeric variables defined above</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>combined_data <span class="sc">|&gt;</span></span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(age, absences.x, absences.y, G1.x, G1.y, G2.x, G2.y, G3.x, G3.y) <span class="sc">|&gt;</span></span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cor</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                    age  absences.x  absences.y        G1.x        G1.y
 age         1.000000000  0.14392517  0.04733182 -0.11037935 -0.05054968
@@ -604,6 +626,7 @@ G3.x        0.91357599  0.54545279  1.00000000  0.475956497
 G3.y        0.49603265  0.89430982  0.47595650  1.000000000</code></pre>
 </div>
 </div>
+<p>Absences in math had a medium correlation with absences in Portuguese. All of the math grades had high correlation with one another, and medium correlation with Portuguese class. The opposite is also true. The final grades correlated most with the second period grades.</p>
 <p>Create a histogram, kernel density plot, and boxplot for two of the numeric variables across one of the categorical variables. Add appropriate labels and titles.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(combined_data, <span class="fu">aes</span>(<span class="at">x =</span> G3.y)) <span class="sc">+</span></span>
@@ -619,6 +642,7 @@ G3.y        0.49603265  0.89430982  0.47595650  1.000000000</code></pre>
 </div>
 </div>
 </div>
+<p>Clearly there are more students with large families than small ones, but their distributions look similar.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(combined_data, <span class="fu">aes</span>(<span class="at">x =</span> G3.y)) <span class="sc">+</span></span>
 <span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">kernel =</span> <span class="st">"gaussian"</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="fu">aes</span>(<span class="at">fill =</span> famsize)) <span class="sc">+</span></span>
@@ -633,6 +657,7 @@ G3.y        0.49603265  0.89430982  0.47595650  1.000000000</code></pre>
 </div>
 </div>
 </div>
+<p>Here we can see more clearly that both family sizes have similar densities, though like above we can see that there are some low Portuguese grades among students from large families.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(combined_data) <span class="sc">+</span></span>
 <span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> famsize, <span class="at">y =</span> G3.y, <span class="at">fill =</span> famsize)) <span class="sc">+</span></span>
@@ -647,6 +672,7 @@ G3.y        0.49603265  0.89430982  0.47595650  1.000000000</code></pre>
 </div>
 </div>
 </div>
+<p>The boxplot more clearly shows that the minimum Portuguese grade is much lower in large families than small families, and there are even some extremely low grade outliers in the large family size group.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(combined_data, <span class="fu">aes</span>(<span class="at">x =</span> absences.y)) <span class="sc">+</span></span>
 <span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">1</span>, <span class="fu">aes</span>(<span class="at">fill =</span> famsize)) <span class="sc">+</span></span>
@@ -661,6 +687,7 @@ G3.y        0.49603265  0.89430982  0.47595650  1.000000000</code></pre>
 </div>
 </div>
 </div>
+<p>Once again there are far more students with large families, but the absences in Portuguese class looks similar between the family sizes.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(combined_data, <span class="fu">aes</span>(<span class="at">x =</span> absences.y)) <span class="sc">+</span></span>
 <span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">kernel =</span> <span class="st">"gaussian"</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="fu">aes</span>(<span class="at">fill =</span> famsize)) <span class="sc">+</span></span>
@@ -675,6 +702,7 @@ G3.y        0.49603265  0.89430982  0.47595650  1.000000000</code></pre>
 </div>
 </div>
 </div>
+<p>With the density plot we can see that the absences in Portuguese class are roughly identical among different family sizes.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(combined_data) <span class="sc">+</span></span>
 <span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> famsize, <span class="at">y =</span> absences.y, <span class="at">fill =</span> famsize)) <span class="sc">+</span></span>
@@ -689,6 +717,7 @@ G3.y        0.49603265  0.89430982  0.47595650  1.000000000</code></pre>
 </div>
 </div>
 </div>
+<p>The boxplot shows that both students from large and small families had some outliers in terms of having many absences from Portuguese class.</p>
 <p>Create two scatterplots relating a G3 variable to other numeric variables (put G3 on the y-axis). You should jitter the points if they sit on top of each other. Color the points by a categorical variable in each. Add appropriate labels and titles.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(combined_data, <span class="fu">aes</span>(<span class="at">x =</span> G1.x, <span class="at">y =</span> G3.x, <span class="at">color =</span> paid.x)) <span class="sc">+</span></span>
@@ -704,6 +733,7 @@ G3.y        0.49603265  0.89430982  0.47595650  1.000000000</code></pre>
 </div>
 </div>
 </div>
+<p>There’s some students that appear to have not continued the math class after their first period grade. If we ignore them, the rest of the students appear to have a positive and fairly strong relationship between their first period math grade and their final grade. There doesn’t seem to be any clear difference in math grade between students who paid for extra math classes and those who didn’t.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(combined_data, <span class="fu">aes</span>(<span class="at">x =</span> G2.x, <span class="at">y =</span> G3.x, <span class="at">color =</span> paid.x)) <span class="sc">+</span></span>
 <span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width =</span> <span class="fl">0.2</span>, <span class="at">alpha =</span> <span class="fl">0.3</span>) <span class="sc">+</span></span>
@@ -718,6 +748,7 @@ G3.y        0.49603265  0.89430982  0.47595650  1.000000000</code></pre>
 </div>
 </div>
 </div>
+<p>We have the students in the far left corner who likely withdrew from the class after their first period, then the other students on the bottom who likely withdrew after their second period. The rest of the students appear to have a positive and very strong relationship between their second period math grade and their final grade. There doesn’t seem to be any clear difference in math grade between students who paid for extra math classes and those who didn’t.</p>
 <p>Repeat the scatter plot step but use faceting to obtain graphs at each setting of another categorical variable.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(combined_data, <span class="fu">aes</span>(<span class="at">x =</span> G1.x, <span class="at">y =</span> G3.x, <span class="at">color =</span> paid.x)) <span class="sc">+</span></span>
@@ -734,6 +765,7 @@ G3.y        0.49603265  0.89430982  0.47595650  1.000000000</code></pre>
 </div>
 </div>
 </div>
+<p>It’s hard to tell much of a difference in grades between Female and Male students in this plot. It’s possible that it looks like Male students performed slightly better on average than Female students in math at these schools. Both had a positive relationship between their first period grade and final grade. There are no male students who paid for extra math classes and dropped out after their first period.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(combined_data, <span class="fu">aes</span>(<span class="at">x =</span> G2.x, <span class="at">y =</span> G3.x, <span class="at">color =</span> paid.x)) <span class="sc">+</span></span>
 <span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width =</span> <span class="fl">0.2</span>, <span class="at">alpha =</span> <span class="fl">0.3</span>) <span class="sc">+</span></span>
@@ -749,6 +781,7 @@ G3.y        0.49603265  0.89430982  0.47595650  1.000000000</code></pre>
 </div>
 </div>
 </div>
+<p>Same as above, Male students may have performed slightly better in math on average compared to Female students at these schools. Both had a positive and strong relationship between their second period math grade and their final math grade.</p>
 <p>Repeat the scatter plot step but use faceting to obtain graphs at each combination of two categorical variables.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(combined_data, <span class="fu">aes</span>(<span class="at">x =</span> G1.x, <span class="at">y =</span> G3.x, <span class="at">color =</span> paid.x)) <span class="sc">+</span></span>
@@ -765,6 +798,7 @@ G3.y        0.49603265  0.89430982  0.47595650  1.000000000</code></pre>
 </div>
 </div>
 </div>
+<p>General trends look about the same for all groups, and there doesn’t appear to be any difference between students who paid for extra math classes and those that didn’t. It looks like there’s more students who performed poorly in math overall in the GT3 large family group compared to the LE3 small family group.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(combined_data, <span class="fu">aes</span>(<span class="at">x =</span> G2.x, <span class="at">y =</span> G3.x, <span class="at">color =</span> paid.x)) <span class="sc">+</span></span>
 <span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width =</span> <span class="fl">0.2</span>, <span class="at">alpha =</span> <span class="fl">0.3</span>) <span class="sc">+</span></span>
@@ -780,6 +814,7 @@ G3.y        0.49603265  0.89430982  0.47595650  1.000000000</code></pre>
 </div>
 </div>
 </div>
+<p>Same findings as above for the second period math grade compared to the final math grade. The second period grade is more strongly related to the final grade in math across groups when compared to the first period grade. Once again it seems like there’s more students in the large family group who performed worse overall in math compared to those in the small family group.</p>
 
 
 </section>

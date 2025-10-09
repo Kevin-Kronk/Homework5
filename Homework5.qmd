@@ -16,10 +16,11 @@ library(tidyverse)
 Modify the code provided to read in the data from a local file source and combine the two data frames. Use local paths as they do in their code.
 
 ```{r}
-# Code provided
+# Code provided with updated local paths
 d1=read.table("student+performance/student/student-mat.csv",sep=";",header=TRUE)
 d2=read.table("student+performance/student/student-por.csv",sep=";",header=TRUE)
 
+# Combine the two data sets where these columns match
 d3=merge(d1,d2,by=c("school","sex","age","address","famsize","Pstatus","Medu","Fedu","Mjob","Fjob","reason","nursery","internet"))
 print(nrow(d3)) # 382 students
 ```
@@ -27,13 +28,13 @@ print(nrow(d3)) # 382 students
 Read in and combine the data using functions from the tidyverse. Use an inner_join() on the variables they used in their code. Do you notice any issues? Make a note of the issue.
 
 ```{r}
-# Load the data
+# Load the ; delimited data
 math_data <- read_csv2("student+performance/student/student-mat.csv", 
                        col_names=TRUE)
 portuguese_data <- read_csv2("student+performance/student/student-por.csv",
                              col_names=TRUE)
 
-# inner join
+# inner join the tibbles by these columns
 combined_data <- inner_join(math_data, portuguese_data, 
                             by = c("school","sex","age","address",
                                    "famsize","Pstatus","Medu","Fedu",
@@ -44,10 +45,10 @@ combined_data
 
 There appears to be an unexpected many-to-many relationship between 'x' and 'y'. Row 79 of 'x' matches multiple rows in 'y', and vice versa.
 
-User an inner_join() on all variables other than G1, G2, G3, paid, and absences. Use this form of the combined data in further exercises.
+Use an inner_join() on all variables other than G1, G2, G3, paid, and absences. Use this form of the combined data in further exercises.
 
 ```{r}
-# inner join
+# inner join the tibbles on all variables but G1, G2, G3, paid, absences
 combined_data <- inner_join(math_data, portuguese_data, 
                             by = c("school","sex","age","address",
                                    "famsize","Pstatus","Medu","Fedu",
@@ -63,6 +64,7 @@ combined_data
 Next, for the math data, Portuguese, and combined data, choose four categorical variables you are interested in and convert those into factor variables in each tibble (use the same four in each). Use the mutate() function to accomplish this.
 
 ```{r}
+# Converting school, sex, internet, and activities to factor
 math_data <- math_data |>
   mutate(school = as.factor(school),
          sex = as.factor(sex),
@@ -90,15 +92,17 @@ Look at how the data is stored and see if everything makes sense.
 str(combined_data)
 ```
 
-All of the variables look reasonable.
+All of the variables look reasonable and the four categorical variables from before are now factors.
 
 Document the missing values in the data.
 
 ```{r}
+# Function to sum all of the NA values for a given column
 sum_na <- function(column) {
   sum(is.na(column))
 }
 
+# Runs the sum_na function on all columns
 combined_data |>
   summarize(across(everything(), sum_na))
 ```
@@ -138,32 +142,41 @@ Create a conditional two-way table using table(). That is, condition on one vari
 -   Once, by subsetting the data (say with filter()) and then creating the two-way table.
 
 ```{r}
-# Conditional two-way table by subsetting data
+# Subsetting the data with filter
 subset_data <- combined_data |>
   filter(internet == 'yes') |>
   select(school, activities, internet)
 
+# Creating conditional two-way table
 table(subset_data$school, subset_data$activities)
 ```
 
 -   Once, by creating a three-way table and subsetting it.
 
 ```{r}
+# Three-way contingency table
 three_way_contingency <- table(combined_data$school,
                               combined_data$activities,
                               combined_data$internet)
 
+# Subsetting it for yes to internet
 three_way_contingency[ , , "yes"]
 ```
+
+This shows that for the students that have internet access at home, there are more students who do extra curriculars at Gabriel Pereira school than Mousinho da Silveira school.
 
 Create a two-way contingency table using group_by() and summarize() from dplyr. Then use pivot_wider() to make the result look more like the output from table().
 
 ```{r}
+# Grouping the data on school and activities, counting for each group
+# then pivoting the table to have school on the y axis and activities on the x axis
 combined_data |>
   group_by(school, activities) |>
   summarize(count = n()) |>
   pivot_wider(names_from = activities, values_from = count)
 ```
+
+Now looking at all the students, there are more overall that do extra-curricular activities, even though Mousinho da Silveira school has more that don't do extra-curriculars. Perhaps MS school is less well off and doesn't have as many extra-curricular activities, but it could also just be random variation.
 
 Create a stacked bar graph and a side-by-side bar graph. Give relevant x and y labels, and a title for the plots.
 
@@ -176,6 +189,8 @@ ggplot(combined_data, aes(x = school, fill = activities)) +
   scale_fill_discrete("Activities")
 ```
 
+This plot clearly demonstrates that GP is a much larger school than MS.
+
 ```{r}
 # Side-by-side bar graph
 ggplot(combined_data, aes(x = school, fill = activities)) +
@@ -185,6 +200,8 @@ ggplot(combined_data, aes(x = school, fill = activities)) +
   scale_fill_discrete("Activities")
 ```
 
+This plot shows that GP clearly has a higher proportion of students doing extra-curricular activities than MS.
+
 #### Numeric Variables (and across groups)
 
 The numeric variables are age, absences, and the three test grades variables (G1, G2, G3) from each data set.
@@ -192,6 +209,7 @@ The numeric variables are age, absences, and the three test grades variables (G1
 Find measures of center and spread for three of these variables (including at least one G3 variable).
 
 ```{r}
+# Finding the mean, median, sd, and IRQ for three numeric variables
 combined_data |>
   summarize(across(c("age", "absences.x", "G3.x"), list("mean" = mean,
                                                         "median" = median,
@@ -200,9 +218,12 @@ combined_data |>
                    .names = "{.col}_{.fn}"))
 ```
 
+The average student is around 16.5 years old, meaning they are in high school. The mean absences in math class is higher than the median, so the distribution is skewed right with a large standard deviation. The final math grade mean and median are about the same with most students getting roughly a 2.4 to a 19.6 score.
+
 Repeat while subsetting the data in a meaningful way.
 
 ```{r}
+# This time looking at students in poor health
 combined_data |>
   filter(health >= 2) |>
   summarize(across(c("age", "absences.x", "G3.x"), list("mean" = mean,
@@ -212,9 +233,12 @@ combined_data |>
                    .names = "{.col}_{.fn}"))
 ```
 
+The age of students in poor health is about the same as before. Perhaps surprisingly the number of absences in math is also about the same as before. The final math grades are slightly worse, but not by as much as you might expect for students in poor health.
+
 Find measures of center and spread across a single grouping variable for three of these variables (including a G3 variable as one of them).
 
 ```{r}
+# Finding mean, median, sd, and IQR, for numeric variables grouped by sex
 combined_data |>
   group_by(sex) |>
   summarize(across(c("age", "absences.y", "G3.y"), list("mean" = mean,
@@ -224,9 +248,12 @@ combined_data |>
                    .names = "{.col}_{.fn}"))
 ```
 
+The ages of female and male students are roughly the same, with female students being slightly older. The female students have slightly more absences in Portuguese than the male students on average, as well as a higher standard deviation. The female students on average scored 1 point better on their final Portuguese grades than male students, though they had a lower standard deviation.
+
 Find measures of center and spread across two grouping variables for three of these variables (including a G3 variable as one of them).
 
 ```{r}
+# Finding mean, median, sd, and IQR, grouped by sex and guardian
 combined_data |>
   group_by(sex, guardian) |>
   summarize(across(c("G1.x", "G2.x", "G3.x"), list("mean" = mean,
@@ -236,13 +263,18 @@ combined_data |>
                    .names = "{.col}_{.fn}"))
 ```
 
+Unfortunately it seems that students whose guardian was not a mother or father scored worse on their math grade for first period, second period, and especially for the female students on their final grade. The male students with other guardians on average had only slightly worse math grades on their final grade that the average male student with a mother or father guardian.
+
 Create a correlation matrix between all of the numeric variables.
 
 ```{r}
+# Correlation matrix between all numeric variables defined above
 combined_data |>
   select(age, absences.x, absences.y, G1.x, G1.y, G2.x, G2.y, G3.x, G3.y) |>
   cor()
 ```
+
+Absences in math had a medium correlation with absences in Portuguese. All of the math grades had high correlation with one another, and medium correlation with Portuguese class. The opposite is also true. The final grades correlated most with the second period grades.
 
 Create a histogram, kernel density plot, and boxplot for two of the numeric variables across one of the categorical variables. Add appropriate labels and titles.
 
@@ -254,6 +286,8 @@ ggplot(combined_data, aes(x = G3.y)) +
   scale_fill_discrete("Family Size")
 ```
 
+Clearly there are more students with large families than small ones, but their distributions look similar.
+
 ```{r}
 ggplot(combined_data, aes(x = G3.y)) +
   geom_density(kernel = "gaussian", alpha = 0.5, aes(fill = famsize)) +
@@ -261,6 +295,8 @@ ggplot(combined_data, aes(x = G3.y)) +
        title = "Density Plot of Final Portuguese Grade per Family Size") +
   scale_fill_discrete("Family Size")
 ```
+
+Here we can see more clearly that both family sizes have similar densities, though like above we can see that there are some low Portuguese grades among students from large families.
 
 ```{r}
 ggplot(combined_data) +
@@ -270,6 +306,8 @@ ggplot(combined_data) +
   scale_fill_discrete("Family Size")
 ```
 
+The boxplot more clearly shows that the minimum Portuguese grade is much lower in large families than small families, and there are even some extremely low grade outliers in the large family size group.
+
 ```{r}
 ggplot(combined_data, aes(x = absences.y)) +
   geom_histogram(binwidth = 1, aes(fill = famsize)) +
@@ -277,6 +315,8 @@ ggplot(combined_data, aes(x = absences.y)) +
        title = "Histogram of Absences in Portuguese Class per Family Size") +
   scale_fill_discrete("Family Size")
 ```
+
+Once again there are far more students with large families, but the absences in Portuguese class looks similar between the family sizes.
 
 ```{r}
 ggplot(combined_data, aes(x = absences.y)) +
@@ -286,6 +326,8 @@ ggplot(combined_data, aes(x = absences.y)) +
   scale_fill_discrete("Family Size")
 ```
 
+With the density plot we can see that the absences in Portuguese class are roughly identical among different family sizes.
+
 ```{r}
 ggplot(combined_data) +
   geom_boxplot(aes(x = famsize, y = absences.y, fill = famsize)) +
@@ -293,6 +335,8 @@ ggplot(combined_data) +
        title = "Boxplot of Absences in Portuguese Class per Family Size") +
   scale_fill_discrete("Family Size")
 ```
+
+The boxplot shows that both students from large and small families had some outliers in terms of having many absences from Portuguese class.
 
 Create two scatterplots relating a G3 variable to other numeric variables (put G3 on the y-axis). You should jitter the points if they sit on top of each other. Color the points by a categorical variable in each. Add appropriate labels and titles.
 
@@ -304,6 +348,8 @@ ggplot(combined_data, aes(x = G1.x, y = G3.x, color = paid.x)) +
        color = "Paid Classes")
 ```
 
+There's some students that appear to have not continued the math class after their first period grade. If we ignore them, the rest of the students appear to have a positive and fairly strong relationship between their first period math grade and their final grade. There doesn't seem to be any clear difference in math grade between students who paid for extra math classes and those who didn't.
+
 ```{r}
 ggplot(combined_data, aes(x = G2.x, y = G3.x, color = paid.x)) +
   geom_jitter(width = 0.2, alpha = 0.3) +
@@ -311,6 +357,8 @@ ggplot(combined_data, aes(x = G2.x, y = G3.x, color = paid.x)) +
        title = "Second Period Grade vs Final Grade in Math by Paid Classes",
        color = "Paid Classes")
 ```
+
+We have the students in the far left corner who likely withdrew from the class after their first period, then the other students on the bottom who likely withdrew after their second period. The rest of the students appear to have a positive and very strong relationship between their second period math grade and their final grade. There doesn't seem to be any clear difference in math grade between students who paid for extra math classes and those who didn't.
 
 Repeat the scatter plot step but use faceting to obtain graphs at each setting of another categorical variable.
 
@@ -323,6 +371,8 @@ ggplot(combined_data, aes(x = G1.x, y = G3.x, color = paid.x)) +
        color = "Paid Classes")
 ```
 
+It's hard to tell much of a difference in grades between Female and Male students in this plot. It's possible that it looks like Male students performed slightly better on average than Female students in math at these schools. Both had a positive relationship between their first period grade and final grade. There are no male students who paid for extra math classes and dropped out after their first period.
+
 ```{r}
 ggplot(combined_data, aes(x = G2.x, y = G3.x, color = paid.x)) +
   geom_jitter(width = 0.2, alpha = 0.3) +
@@ -331,6 +381,8 @@ ggplot(combined_data, aes(x = G2.x, y = G3.x, color = paid.x)) +
        title ="Second Period Grade vs Final Grade in Math by Sex and Paid Classes",
        color = "Paid Classes")
 ```
+
+Same as above, Male students may have performed slightly better in math on average compared to Female students at these schools. Both had a positive and strong relationship between their second period math grade and their final math grade.
 
 Repeat the scatter plot step but use faceting to obtain graphs at each combination of two categorical variables.
 
@@ -343,6 +395,8 @@ ggplot(combined_data, aes(x = G1.x, y = G3.x, color = paid.x)) +
        color = "Paid Classes")
 ```
 
+General trends look about the same for all groups, and there doesn't appear to be any difference between students who paid for extra math classes and those that didn't. It looks like there's more students who performed poorly in math overall in the GT3 large family group compared to the LE3 small family group.
+
 ```{r}
 ggplot(combined_data, aes(x = G2.x, y = G3.x, color = paid.x)) +
   geom_jitter(width = 0.2, alpha = 0.3) +
@@ -351,3 +405,5 @@ ggplot(combined_data, aes(x = G2.x, y = G3.x, color = paid.x)) +
        title = "Second Period vs Final Grade in Math by Family Size, Sex and Paid Classes",
        color = "Paid Classes")
 ```
+
+Same findings as above for the second period math grade compared to the final math grade. The second period grade is more strongly related to the final grade in math across groups when compared to the first period grade. Once again it seems like there's more students in the large family group who performed worse overall in math compared to those in the small family group.
