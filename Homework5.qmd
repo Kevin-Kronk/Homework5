@@ -184,3 +184,94 @@ ggplot(combined_data, aes(x = school, fill = activities)) +
        title = "Extra-Curricular Involvement by School") +
   scale_fill_discrete("Activities")
 ```
+
+#### Numeric Variables (and across groups)
+
+The numeric variables are age, absences, and the three test grades variables (G1, G2, G3) from each data set.
+
+Find measures of center and spread for three of these variables (including at least one G3 variable).
+
+```{r}
+combined_data |>
+  summarize(across(c("age", "absences.x", "G3.x"), list("mean" = mean,
+                                                        "median" = median,
+                                                        "sd" = sd,
+                                                        "IQR" = IQR),
+                   .names = "{.col}_{.fn}"))
+```
+
+Repeat while subsetting the data in a meaningful way.
+
+```{r}
+combined_data |>
+  filter(health >= 2) |>
+  summarize(across(c("age", "absences.x", "G3.x"), list("mean" = mean,
+                                                        "median" = median,
+                                                        "sd" = sd,
+                                                        "IQR" = IQR),
+                   .names = "{.col}_{.fn}"))
+```
+
+Find measures of center and spread across a single grouping variable for three of these variables (including a G3 variable as one of them).
+
+```{r}
+combined_data |>
+  group_by(sex) |>
+  summarize(across(c("age", "absences.y", "G3.y"), list("mean" = mean,
+                                                        "median" = median,
+                                                        "sd" = sd,
+                                                        "IQR" = IQR),
+                   .names = "{.col}_{.fn}"))
+```
+
+Find measures of center and spread across two grouping variables for three of these variables (including a G3 variable as one of them).
+
+```{r}
+combined_data |>
+  group_by(sex, guardian) |>
+  summarize(across(c("G1.x", "G2.x", "G3.x"), list("mean" = mean,
+                                                   "median" = median,
+                                                   "sd" = sd,
+                                                   "IQR" = IQR),
+                   .names = "{.col}_{.fn}"))
+```
+
+Create a correlation matrix between all of the numeric variables.
+
+```{r}
+combined_data |>
+  select(age, absences.x, absences.y, G1.x, G1.y, G2.x, G2.y, G3.x, G3.y) |>
+  cor()
+```
+
+Create a histogram, kernel density plot, and boxplot for two of the numeric variables across one of the categorical variables. Add appropriate labels and titles.
+
+```{r}
+ggplot(combined_data, aes(x = G3.y)) +
+  geom_histogram(binwidth = 1, aes(fill = famsize))
+```
+
+```{r}
+ggplot(combined_data, aes(x = G3.y)) +
+  geom_density(kernel = "gaussian", alpha = 0.5, aes(fill = famsize))
+```
+
+```{r}
+ggplot(combined_data) +
+  geom_boxplot(aes(x = famsize, y = G3.y, fill = famsize))
+```
+
+```{r}
+ggplot(combined_data, aes(x = absences.y)) +
+  geom_histogram(binwidth = 1, aes(fill = famsize))
+```
+
+```{r}
+ggplot(combined_data, aes(x = absences.y)) +
+  geom_density(kernel = "gaussian", alpha = 0.5, aes(fill = famsize))
+```
+
+```{r}
+ggplot(combined_data) +
+  geom_boxplot(aes(x = famsize, y = absences.y, fill = famsize))
+```
