@@ -39,7 +39,7 @@ combined_data <- inner_join(math_data, portuguese_data,
                                    "famsize","Pstatus","Medu","Fedu",
                                    "Mjob","Fjob","reason","nursery","internet"))
 
-full_data
+combined_data
 ```
 
 There appears to be an unexpected many-to-many relationship between 'x' and 'y'. Row 79 of 'x' matches multiple rows in 'y', and vice versa.
@@ -248,30 +248,106 @@ Create a histogram, kernel density plot, and boxplot for two of the numeric vari
 
 ```{r}
 ggplot(combined_data, aes(x = G3.y)) +
-  geom_histogram(binwidth = 1, aes(fill = famsize))
+  geom_histogram(binwidth = 1, aes(fill = famsize)) +
+  labs(x = "Final Grade in Portuguese", y = "Count", 
+       title = "Histogram of Final Portuguese Grade per Family Size") +
+  scale_fill_discrete("Family Size")
 ```
 
 ```{r}
 ggplot(combined_data, aes(x = G3.y)) +
-  geom_density(kernel = "gaussian", alpha = 0.5, aes(fill = famsize))
+  geom_density(kernel = "gaussian", alpha = 0.5, aes(fill = famsize)) +
+  labs(x = "Final Grade in Portuguese", y = "Density", 
+       title = "Density Plot of Final Portuguese Grade per Family Size") +
+  scale_fill_discrete("Family Size")
 ```
 
 ```{r}
 ggplot(combined_data) +
-  geom_boxplot(aes(x = famsize, y = G3.y, fill = famsize))
+  geom_boxplot(aes(x = famsize, y = G3.y, fill = famsize)) +
+  labs(x = "Family Size", y = "Final Grade in Portuguese", 
+       title = "Boxplot of Final Portuguese Grade per Family Size") +
+  scale_fill_discrete("Family Size")
 ```
 
 ```{r}
 ggplot(combined_data, aes(x = absences.y)) +
-  geom_histogram(binwidth = 1, aes(fill = famsize))
+  geom_histogram(binwidth = 1, aes(fill = famsize)) +
+  labs(x = "Absences in Portuguese Class", y = "Count", 
+       title = "Histogram of Absences in Portuguese Class per Family Size") +
+  scale_fill_discrete("Family Size")
 ```
 
 ```{r}
 ggplot(combined_data, aes(x = absences.y)) +
-  geom_density(kernel = "gaussian", alpha = 0.5, aes(fill = famsize))
+  geom_density(kernel = "gaussian", alpha = 0.5, aes(fill = famsize)) +
+  labs(x = "Absences in Portuguese Class", y = "Density", 
+       title = "Density Plot of Absences in Portuguese Class per Family Size") +
+  scale_fill_discrete("Family Size")
 ```
 
 ```{r}
 ggplot(combined_data) +
-  geom_boxplot(aes(x = famsize, y = absences.y, fill = famsize))
+  geom_boxplot(aes(x = famsize, y = absences.y, fill = famsize)) +
+  labs(x = "Family Size", y = "Absences in Portuguese Class", 
+       title = "Boxplot of Absences in Portuguese Class per Family Size") +
+  scale_fill_discrete("Family Size")
+```
+
+Create two scatterplots relating a G3 variable to other numeric variables (put G3 on the y-axis). You should jitter the points if they sit on top of each other. Color the points by a categorical variable in each. Add appropriate labels and titles.
+
+```{r}
+ggplot(combined_data, aes(x = G1.x, y = G3.x, color = paid.x)) +
+  geom_jitter(width = 0.2, alpha = 0.3) +
+  labs(x = "First Period Grade in Math", y = "Final Grade in Math", 
+       title = "First Period Grade vs Final Grade in Math by Paid Classes",
+       color = "Paid Classes")
+```
+
+```{r}
+ggplot(combined_data, aes(x = G2.x, y = G3.x, color = paid.x)) +
+  geom_jitter(width = 0.2, alpha = 0.3) +
+  labs(x = "Second Period Grade in Math", y = "Final Grade in Math", 
+       title = "Second Period Grade vs Final Grade in Math by Paid Classes",
+       color = "Paid Classes")
+```
+
+Repeat the scatter plot step but use faceting to obtain graphs at each setting of another categorical variable.
+
+```{r}
+ggplot(combined_data, aes(x = G1.x, y = G3.x, color = paid.x)) +
+  geom_jitter(width = 0.2, alpha = 0.3) +
+  facet_wrap(~ sex) +
+  labs(x = "First Period Grade in Math", y = "Final Grade in Math", 
+       title = "First Period Grade vs Final Grade in Math by Sex and Paid Classes",
+       color = "Paid Classes")
+```
+
+```{r}
+ggplot(combined_data, aes(x = G2.x, y = G3.x, color = paid.x)) +
+  geom_jitter(width = 0.2, alpha = 0.3) +
+  facet_wrap(~ sex) +
+  labs(x = "Second Period Grade in Math", y = "Final Grade in Math", 
+       title ="Second Period Grade vs Final Grade in Math by Sex and Paid Classes",
+       color = "Paid Classes")
+```
+
+Repeat the scatter plot step but use faceting to obtain graphs at each combination of two categorical variables.
+
+```{r}
+ggplot(combined_data, aes(x = G1.x, y = G3.x, color = paid.x)) +
+  geom_jitter(width = 0.2, alpha = 0.3) +
+  facet_grid(sex ~ famsize) +
+  labs(x = "First Period Grade in Math", y = "Final Grade in Math", 
+       title = "First Period vs Final Grade in Math by Family Size, Sex and Paid Classes",
+       color = "Paid Classes")
+```
+
+```{r}
+ggplot(combined_data, aes(x = G2.x, y = G3.x, color = paid.x)) +
+  geom_jitter(width = 0.2, alpha = 0.3) +
+  facet_grid(sex ~ famsize) +
+  labs(x = "Second Period Grade in Math", y = "Final Grade in Math", 
+       title = "Second Period vs Final Grade in Math by Family Size, Sex and Paid Classes",
+       color = "Paid Classes")
 ```
